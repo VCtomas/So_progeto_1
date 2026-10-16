@@ -1,0 +1,11 @@
+No desenvolvimento do programa estes documentos foram utilizados:
+
+- vidios:
+video que explica como getotps funciona no bash: https://www.youtube.com/watch?v=5O4SLIDSMqg
+
+- sites:
+
+google style code: https://google.github.io/styleguide/shellguide.html
+site explica getotps: https://zerotomastery.io/blog/bash-getopts/
+site explica como usar booleans no bash: https://www.baeldung.com/linux/shell-script-boolean-type-variable
+site explica shift opts: https://unix.stackexchange.com/questions/214141/explain-the-shell-command-shift-optind-1

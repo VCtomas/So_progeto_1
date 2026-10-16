@@ -1,0 +1,13 @@
+este ficheiro tem como propósito guardar alguns edge cases,
+que possam vir a aparecer ao longo do progeto/ formas que
+algum atacante poderia comprometer o nosso ficheiro.
+Isto é so para ajudar a fazer e não mandar para o professor.
+Problemas:
+
+  - path injection
+  - tentar guardar comandos sem permisões no bash
+  - tentar 
+  - remover o ficheiro original e criar uma cópia identica
+
+
+    - performance em relação à execução a incriptar ficheiros
