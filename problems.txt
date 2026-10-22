@@ -6,8 +6,8 @@ Problemas:
 
   - path injection
   - tentar guardar comandos sem permisões no bash
-  - tentar 
   - remover o ficheiro original e criar uma cópia identica
-
-
-    - performance em relação à execução a incriptar ficheiros
+  - performance em relação à execução a incriptar ficheiros
+  - linked files
+  - diferent inodes pointing to same file problems
+  - ficheiros com nomes ($'\n' e ' ' e ',' e ' ";bash_comand;" ') podem dar problema.
