@@ -1,0 +1,45 @@
+Na função print_help()
+Alterei -c para -v, porque a opção de verificação indicada no enunciado é -v.
+
+Também alterei tmp/.pdb para /tmp/.pdb, porque faltava a barra inicial no caminho da base de dados temporária.
+
+Na função assert_valid_remaing_files():
+Neste parte do código tens alguma razão especifica para fazer assim? 
+if ! [[ -r "$argument" ]] || ! [[ -e "$argument" ]]; then
+
+Porque o código assim verifica se o diretório tem permissão de leitura (-r) e se existe (-e). Como o código já verifica antes se o argumento é um diretório (-d), não preciso de verificar se existe -e. Logo alterei-a para -x, que verifica se é possível aceder ao conteúdo do diretório.
+
+Acrescentei:
+print_help >&2
+nos erros de argumentos e nas validações iniciais, porque o enunciado pede que as condições de erro apresentem uma mensagem de ajuda e um resumo da utilização correta. >&2 envia a ajuda para a saída de erro.
+
+Na função assert_logs_file()
+Retirei a criação da base de dados com touch para protect_mode(), depois da validação dos diretórios. Assim, um diretório inválido não deixa uma base de dados vazia. 
+
+Na função parseArgs()
+Substituí getopts por um ciclo while com case para aceitar opções depois dos diretórios, como no exemplo do enunciado:
+./vp -p /etc /home/jjcf -e "*.log"
+Acrescentei verificações para argumentas em falta para -e ou -f. No fim, usei realpath para normalizar o caminho da base de dados.
+
+Em protect_mode(), acrescentei uma lista temporária, criada com mktemp, para reunir os caminhos encontrados. Depois uso sort -u para eliminar duplicados, por exemplo, quando os diretórios indicados se sobrepõem. Assim, cada caminho é corrido uma vez. A criação da base de dados foi colocada nesta função.
+
+Em protect_folder()
+Alterei a recursão feita com ciclos e * por find, pois esta percorre os subdiretórios e encontra ficheiros ocultos, que o padrão * do código original não encontrava.
+Acrescentei à base de dados linhas #dir para guardar os diretórios a percorrer durante a verificação.
+
+Acrescentei uma função should_ignore()
+Para verificar se um ficheiro corresponde ao padrão de exclusão. Usei padrões glob, como *.log ou /tmp/*, que são os exemplos do enunciado. 
+
+Na função save_file_metadata()
+Declarei sha256 como variável local, retirei a verificação de exclusões pois passou para should_ignore() e guardei diretamente $file, porque protect_folder() já tem o caminho completo.
+
+Na função view_mode()
+Acrescentei a leitura do padrão de exclusão guardado na base de dados e também acrescentei a procura dos ficheiros atuais para que possam ser detetados ficheiros novos. Alterei a leitura da base de dados para ignorar o cabeçalho e as linhas de informação iniciadas por #, que não existiam no formato original.
+
+
+No validate_arguments()
+Substituí as várias chamadas a awk por uma única leitura dos campos com IFS=, read para reduzir a repetição de comandos. Também movi a verificação de ficheiros apagados para antes de stat e do cálculo do hash, para não tentar obter dados de um ficheiro que já não existe. Acrescentei uma verificação para ficheiros que já não sejam regulares ou legíveis e a apresentação dos dados iniciais e atuais quando há alterações.
+
+
+Na função verify_new_files_in_directory()
+Substituí a procura original com grep por uma leitura das linhas da base de dados e uma comparação exata do caminho. Eu sei que no guião aparecia o grep mas parecia menos complicado e mais completo não o usar, pois uma procura simples podia confundir /dados/a.txt com /dados/a.txt.bak.
